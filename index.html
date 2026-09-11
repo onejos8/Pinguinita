@@ -767,10 +767,10 @@
             });
         }
 
-        // --- AUDIOS & RECUERDOS ---
+// --- AUDIOS & RECUERDOS ---
         const defaultTracks = [
-            { tag: "Audio 01", title: "Mensaje Especial de Cumpleaños ✨", src: "", isDefault: true },
-            { tag: "Audio 02", title: "Mensaje Especial de Cariño 🤗", src: "", isDefault: true },
+            { tag: "Audio 01", title: "Mensaje Especial de Cumpleaños ✨", src: "Mensajito de Cumpleaños Paz - FINAL.mp3", isDefault: true },
+            { tag: "Audio 02", title: "Mensaje Especial de Cariño 🤗", src: "Mensajito de Cariño Paz - FINAL.mp3", isDefault: true },
         ];
 
         function formatTime(seconds) {
@@ -785,16 +785,28 @@
         let playing = false;
         let currentAudioElement = new Audio();
 
+        // Función mejorada para precargar duraciones de forma robusta
         function loadTrackDurations() {
             audioTracks.forEach((track, index) => {
-                if (track.src && !track.duration) {
-                    const tempAudio = new Audio(track.src);
+                if (track.src && (!track.duration || track.duration === "--:--")) {
+                    const tempAudio = new Audio();
+                    tempAudio.src = track.src;
+                    
+                    // Forzar carga de metadata
+                    tempAudio.preload = 'metadata';
+                    
                     tempAudio.onloadedmetadata = () => {
-                        track.duration = formatTime(tempAudio.duration);
-                        renderList();
-                        if (index === currentIndex) {
-                            document.getElementById('ep-duration').innerText = track.duration;
-                            document.getElementById('ep-time-end').innerText = track.duration;
+                        if (tempAudio.duration && !isNaN(tempAudio.duration)) {
+                            track.duration = formatTime(tempAudio.duration);
+                            renderList();
+                            
+                            // Si es el audio actual seleccionado, actualizar la vista del reproductor
+                            if (index === currentIndex) {
+                                const durElem1 = document.getElementById('ep-duration');
+                                const durElem2 = document.getElementById('ep-time-end');
+                                if (durElem1) durElem1.innerText = track.duration;
+                                if (durElem2) durElem2.innerText = track.duration;
+                            }
                         }
                     };
                 }
@@ -802,7 +814,17 @@
         }
 
         function loadCustomAudiosFromDB() {
-            if (!db) return;
+            if (!db) {
+                // Si no hay IndexedDB aún, al menos cargamos las duraciones por defecto
+                loadTrackDurations();
+                renderList();
+                if (audioTracks.length > 0 && audioTracks[0].src) {
+                    currentAudioElement.src = audioTracks[0].src;
+                    currentAudioElement.load();
+                }
+                return;
+            }
+            
             const transaction = db.transaction(["audios"], "readonly");
             const store = transaction.objectStore("audios");
             const getAll = store.getAll();
@@ -812,6 +834,11 @@
                 audioTracks = [...defaultTracks, ...stored];
                 loadTrackDurations();
                 renderList();
+                
+                if (audioTracks.length > 0 && audioTracks[0].src) {
+                    currentAudioElement.src = audioTracks[0].src;
+                    currentAudioElement.load();
+                }
             };
         }
 
@@ -850,11 +877,13 @@
                 currentAudioElement.load();
 
                 currentAudioElement.onloadedmetadata = () => {
-                    const dynamicDuration = formatTime(currentAudioElement.duration);
-                    track.duration = dynamicDuration;
-                    document.getElementById('ep-duration').innerText = dynamicDuration;
-                    document.getElementById('ep-time-end').innerText = dynamicDuration;
-                    renderList();
+                    if (currentAudioElement.duration && !isNaN(currentAudioElement.duration)) {
+                        const dynamicDuration = formatTime(currentAudioElement.duration);
+                        track.duration = dynamicDuration;
+                        document.getElementById('ep-duration').innerText = dynamicDuration;
+                        document.getElementById('ep-time-end').innerText = dynamicDuration;
+                        renderList();
+                    }
                 };
 
                 if (playing) {
@@ -919,7 +948,7 @@
         }
 
         currentAudioElement.ontimeupdate = () => {
-            if (currentAudioElement.duration) {
+            if (currentAudioElement.duration && !isNaN(currentAudioElement.duration)) {
                 const slider = document.getElementById('audio-slider');
                 const progress = (currentAudioElement.currentTime / currentAudioElement.duration) * 100;
                 slider.value = progress;
@@ -929,7 +958,7 @@
         };
 
         document.getElementById('audio-slider').addEventListener('input', (e) => {
-            if (currentAudioElement.duration) {
+            if (currentAudioElement.duration && !isNaN(currentAudioElement.duration)) {
                 const seekTime = (e.target.value / 100) * currentAudioElement.duration;
                 currentAudioElement.currentTime = seekTime;
             }
@@ -986,6 +1015,11 @@
                             renderList();
                             alert('¡Audio guardado exitosamente en tu caja de recuerdos! ✨');
                         };
+                    } else {
+                        audioTracks.push(newAudio);
+                        titleInput.value = '';
+                        fileInput.value = '';
+                        renderList();
                     }
                 };
             };

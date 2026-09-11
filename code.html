@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Paz 🌸 — 11.09.26</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        rosebg: '#FDF7F8',
+                        softpink: '#FBE8EC',
+                        blush: '#F4C2C2',
+                        accentpink: '#E87A90',
+                        deeprose: '#9E3B55',
+                        textdark: '#4A3E3D',
+                        cardbg: '#FFFFFF',
+                        darkbg: '#1A1416',
+                        darkcard: 'rgba(35, 25, 28, 0.85)',
+                        darkborder: 'rgba(158, 59, 85, 0.3)',
+                        darktext: '#F3E5E8'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        display: ['Italiana', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FDF7F8;
+            color: #4A3E3D;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(251, 232, 236, 0.8) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(244, 194, 194, 0.4) 0%, transparent 45%);
+            background-attachment: fixed;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .dark body {
+            background-color: #1A1416;
+            color: #F3E5E8;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(158, 59, 85, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(74, 30, 42, 0.2) 0%, transparent 45%);
+        }
+
+        .soft-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(244, 194, 194, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(232, 122, 144, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .dark .soft-card {
+            background: rgba(35, 25, 28, 0.85);
+            border-color: rgba(158, 59, 85, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .soft-shadow {
+            box-shadow: 0 15px 35px -5px rgba(232, 122, 144, 0.12);
+        }
+
+        input[type=range] {
+            accent-color: #E87A90;
+        }
+
+        .balloon {
+            position: fixed;
+            bottom: -100px;
+            width: 45px;
+            height: 55px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            pointer-events: none;
+            z-index: 100;
+            animation: floatUp 6s linear forwards;
+            opacity: 0.85;
+        }
+
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 14px;
+            background-color: rgba(150, 150, 150, 0.6);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(20deg);
+                opacity: 0;
+            }
+        }
+
+        .organic-petal {
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            transform-origin: bottom center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        @keyframes flyAway {
+            0% {
+                opacity: 1;
+                transform: translate(var(--base-x), var(--base-y)) rotate(var(--rot)) scale(1);
+            }
+            40% {
+                opacity: 0.8;
+                transform: translate(calc(var(--base-x) + 40px), calc(var(--base-y) + 40px)) rotate(calc(var(--rot) + 35deg)) scale(0.9);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(var(--base-x) + 80px), calc(var(--base-y) + 150px)) rotate(calc(var(--rot) + 80deg)) scale(0.5);
+            }
+        }
+
+        .petal-falling {
+            animation: flyAway 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen pb-24 selection:bg-blush selection:text-deeprose">
+
+    <div id="balloon-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+
+    <header class="max-w-3xl mx-auto pt-8 pb-4 px-6 flex justify-between items-center">
+        <span class="font-display text-2xl tracking-widest text-deeprose dark:text-accentpink lowercase">paz.</span>
+        <div class="flex items-center gap-3">
+            <button onclick="toggleDarkMode()" id="theme-btn" class="text-xs bg-softpink/80 dark:bg-deeprose/40 px-3 py-1.5 rounded-full border border-blush/50 dark:border-deeprose/50 transition flex items-center gap-1 hover:scale-105">
+                <span id="theme-icon">🌙</span> <span id="theme-text" class="hidden sm:inline text-xs font-light">Noche</span>
+            </button>
+            <span class="text-xs font-light text-accentpink tracking-widest uppercase bg-softpink/80 dark:bg-deeprose/30 px-4 py-1.5 rounded-full border border-blush/50 dark:border-deeprose/50">11 de septiembre</span>
+        </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-5 space-y-10">
+
+        <!-- Nivel 1: LO MÁS IMPORTANTE -->
+        <section class="soft-card rounded-3xl p-8 md:p-12 text-center relative overflow-hidden soft-shadow">
+            <div class="space-y-4 relative z-10">
+                <span class="text-xs font-sans tracking-widest uppercase text-accentpink font-medium">Un detalle especial</span>
+                <h1 id="hero-title" class="font-serif text-4xl md:text-5xl text-deeprose dark:text-accentpink italic font-normal tracking-tight">
+                    Feliz cumpleaños, Paz 🎂
+                </h1>
+                <p id="hero-subtitle" class="text-sm md:text-base text-textdark/80 dark:text-darktext/80 font-light max-w-md mx-auto leading-relaxed">
+                    Este es un rincón creado específicamente para una persona tan especial como tú: para celebrar tu día, guardar recuerdos, escuchar audios y construir un lugar único.
+                </p>
+
+                <div class="pt-4">
+                    <button onclick="celebrate()" class="bg-accentpink hover:bg-deeprose text-white text-xs font-medium tracking-wider uppercase px-7 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        ✨ Celebrar tu día
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nivel 2: CARTA PRINCIPAL DEL DÍA -->
+        <section class="soft-card rounded-3xl p-8 text-center space-y-5 border-l-4 border-l-accentpink">
+            <span class="text-3xl">🌸</span>
+            <h2 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Mensaje de cumpleaños</h2>
+            <p class="text-textdark/90 dark:text-darktext/90 text-sm md:text-base leading-relaxed font-light max-w-lg mx-auto italic">
+                "Pingüinita, deseo de corazón que tengas un año increíble. Que disfrutes muchísimo tu día, rodeada de personas que te quieren y dándole gracias a Dios por todo lo que él te trajo.
+                Desde la vida que el te da, hasta todo lo que te rodea. Nunca te olvides de él 🫶😊.  "
+            </p>
+            <div class="pt-2 text-xs font-medium text-accentpink tracking-widest uppercase">
+                — Joshua
+            </div>
+        </section>
+
+        <!-- Nivel 3: MENSAJES & DESEOS INFINITOS -->
+        <section class="soft-card rounded-3xl p-7 md:p-9 text-center space-y-4">
+            <div class="space-y-1">
+                <span class="text-2xl">🥠</span>
+                <h2 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Tu pensamiento & deseo del momento</h2>
+                <p class="text-xs text-textdark/60 dark:text-darktext/60 font-light">Presiona cuantas veces quieras (¡frases e inspiraciones infinitas!)</p>
+            </div>
+
+            <div id="fortune-box" class="min-h-[75px] bg-rosebg/80 dark:bg-deeprose/20 rounded-2xl p-4 border border-blush/40 dark:border-deeprose/30 flex items-center justify-center transition">
+                <p id="fortune-text" class="text-xs md:text-sm text-deeprose dark:text-darktext italic font-serif">
+                    "Haz clic abajo para descubrir tu mensaje de hoy..."
+                </p>
+            </div>
+
+            <button onclick="getFortune()" class="py-2.5 px-6 bg-softpink dark:bg-deeprose/40 hover:bg-blush dark:hover:bg-deeprose/60 text-deeprose dark:text-darktext text-xs font-medium rounded-full border border-blush/50 dark:border-deeprose/40 transition transform active:scale-95">
+                ✨ Generar mensaje infinito
+            </button>
+        </section>
+
+        <!-- Nivel 4: SOBRES "ABRE CUANDO..." -->
+        <section class="soft-card rounded-3xl p-7 md:p-9 space-y-5">
+            <div class="border-b border-blush/40 dark:border-deeprose/30 pb-3 flex items-center justify-between">
+                <div>
+                    <h2 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Sobres "Abre cuando..."</h2>
+                    <p class="text-xs text-textdark/60 dark:text-darktext/60 font-light mt-0.5">Mensajes guardados para cuando los necesites</p>
+                </div>
+                <span class="text-xl">✉️</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <button onclick="openLetter(3)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">🎂</div>
+                    <p class="text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Sea el mero día de tu cumpleaños</p>
+                </button>
+
+                <button onclick="openLetter(1)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">🌸</div>
+                    <p class="text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Tengas un día pesado o estés cansada</p>
+                </button>
+
+                <button onclick="openLetter(2)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">✨</div>
+                    <p class="text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Quieras recordar lo increíble que eres</p>
+                </button>
+
+                <button onclick="openLetter(4)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-3.5 sm:p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">😁</div>
+                    <p class="text-[9px] sm:text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Necesites sacarte una sonrisa</p>
+                </button>
+
+                <button onclick="openLetter(5)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-3.5 sm:p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">😉</div>
+                    <p class="text-[9px] sm:text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Recibas una buena noticia</p>
+                </button>
+
+                <button onclick="openLetter(6)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-3.5 sm:p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">❤️‍🩹</div>
+                    <p class="text-[9px] sm:text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Sientas que todo te sale mal</p>
+                </button>
+
+                <button onclick="openLetter(7)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-3.5 sm:p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">🫂</div>
+                    <p class="text-[9px] sm:text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Necesites un abrazo</p>
+                </button>   
+                <button onclick="openLetter(8)" class="bg-rosebg/80 dark:bg-deeprose/20 hover:bg-softpink dark:hover:bg-deeprose/40 border border-blush/50 dark:border-deeprose/40 p-3.5 sm:p-4 rounded-2xl text-left transition duration-300 group cursor-pointer">
+                    <div class="text-2xl mb-1 group-hover:scale-110 transition duration-300">🐧</div>
+                    <p class="text-[9px] sm:text-[10px] uppercase font-bold text-accentpink tracking-wider">Abre cuando...</p>
+                    <p class="text-xs font-serif text-deeprose dark:text-darktext font-medium mt-0.5">Quieras recordar cuánto te quiere este pingüinito</p>
+                </button>             
+            </div>
+        </section>
+
+        <!-- NIVEL INTERACTIVO: FLOR -->
+        <section class="soft-card rounded-3xl p-7 md:p-9 space-y-4 my-6 text-center">
+            <div class="border-b border-blush/40 dark:border-deeprose/30 pb-3 flex items-center justify-between">
+                <div class="text-left">
+                    <h2 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Una flor para una flor 🌸</h2>
+                    <p class="text-xs text-textdark/60 dark:text-darktext/60 font-light mt-0.5">Toca cada pétalo para ver los mensajes</p>
+                </div>
+                <span class="text-xl">🌼</span>
+            </div>
+
+            <div class="relative w-72 h-72 mx-auto my-4 flex items-center justify-center select-none">
+                <svg class="absolute bottom-0 w-24 h-36 z-0 overflow-visible" viewBox="0 0 100 150">
+                    <path d="M 50 0 C 50 60, 30 90, 45 150" fill="none" stroke="#86efac" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M 42 70 C 20 60, 10 40, 25 35 C 35 32, 42 50, 42 70" fill="#4ade80"/>
+                </svg>
+
+                <div class="relative z-20 w-20 h-20 bg-gradient-to-br from-amber-300 to-amber-400 rounded-full shadow-md border-2 border-amber-200 flex items-center justify-center ring-4 ring-amber-100/50">
+                    <div class="w-14 h-14 rounded-full border border-dashed border-amber-500/40 opacity-70"></div>
+                </div>
+
+                <div id="petals-container" class="absolute inset-0 z-10 flex items-center justify-center"></div>
+            </div>
+
+            <div id="flower-message-card" class="min-h-[60px] max-w-sm mx-auto flex items-center justify-center p-4 rounded-2xl bg-white/70 dark:bg-darkbg/70 backdrop-blur-md border border-blush/40 shadow-sm transition-all duration-300 opacity-90 text-center">
+                <p id="flower-message-text" class="font-serif italic text-sm text-deeprose dark:text-accentpink">
+                    Toca un pétalo para descubrir un mensaje ✨
+                </p>
+            </div>
+
+            <button onclick="resetFlower()" class="text-[11px] text-textdark/50 hover:text-deeprose dark:text-darktext/50 dark:hover:text-accentpink underline transition mt-2">
+                Restaurar la flor 🔄
+            </button>
+        </section>
+
+        <!-- Nivel 5: RECUERDOS — AUDIOS -->
+        <section class="soft-card rounded-3xl p-7 md:p-9 space-y-6">
+            <div class="border-b border-blush/40 dark:border-deeprose/30 pb-4 flex items-center justify-between">
+                <div>
+                    <h2 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Caja de audios & recuerdos</h2>
+                    <p class="text-xs text-textdark/60 dark:text-darktext/60 font-light mt-0.5">Mis mensajes de voz + audios que se quedan guardados en el tiempo</p>
+                </div>
+                <span class="text-xl">🎙️</span>
+            </div>
+
+            <div class="bg-rosebg/80 dark:bg-deeprose/20 rounded-2xl p-6 border border-blush/30 dark:border-deeprose/30 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[11px] font-medium text-accentpink uppercase tracking-wider" id="ep-tag">Audio 01</span>
+                        <h3 class="font-serif text-lg text-deeprose dark:text-darktext" id="ep-title">Mensaje Especial de Cumpleaños</h3>
+                    </div>
+                    <span class="text-xs font-mono text-textdark/50 dark:text-darktext/50" id="ep-duration">--:--</span>
+                </div>
+
+                <div class="space-y-1">
+                    <input type="range" id="audio-slider" value="0" min="0" max="100" class="w-full h-1 bg-blush/50 dark:bg-deeprose/50 rounded-lg cursor-pointer">
+                    <div class="flex justify-between text-[10px] font-mono text-textdark/50 dark:text-darktext/50">
+                        <span id="ep-time-current">0:00</span>
+                        <span id="ep-time-end">--:--</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center gap-6 pt-1">
+                    <button onclick="prevAudio()" class="text-accentpink/70 hover:text-deeprose dark:hover:text-accentpink transition text-sm">◀◀</button>
+                    <button onclick="toggleAudio()" id="play-button" class="w-11 h-11 bg-accentpink hover:bg-deeprose text-white rounded-full flex items-center justify-center transition shadow-md">
+                        <span id="play-icon" class="ml-0.5 text-xs">▶</span>
+                    </button>
+                    <button onclick="nextAudio()" class="text-accentpink/70 hover:text-deeprose dark:hover:text-accentpink transition text-sm">▶▶</button>
+                </div>
+            </div>
+
+            <div class="space-y-2 pt-2" id="playlist-box"></div>
+
+            <div class="pt-4 border-t border-blush/30 dark:border-deeprose/30 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-serif text-base text-deeprose dark:text-accentpink italic">✨ Guardar un nuevo audio en la caja</h3>
+                    <span class="text-xs text-textdark/50 dark:text-darktext/50 font-light">Se guarda para siempre</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input type="text" id="user-audio-title" placeholder="Título o momento del audio..." class="bg-white/80 dark:bg-darkbg/80 border border-blush/50 dark:border-deeprose/40 rounded-xl px-3.5 py-2 text-xs text-textdark dark:text-darktext focus:outline-none focus:border-accentpink">
+                    <input type="file" id="user-audio-file" accept="audio/*" class="text-xs text-textdark/60 dark:text-darktext/60 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:bg-softpink dark:file:bg-deeprose/50 file:text-deeprose dark:file:text-darktext hover:file:bg-blush cursor-pointer">
+                </div>
+                <button onclick="addCustomAudio()" class="w-full py-2.5 bg-softpink dark:bg-deeprose/40 hover:bg-blush dark:hover:bg-deeprose/60 text-deeprose dark:text-darktext text-xs font-medium rounded-xl border border-blush/50 dark:border-deeprose/40 transition">
+                    + Guardar audio en la caja de recuerdos
+                </button>
+            </div>
+        </section>
+
+        <!-- Nivel 6: MÚSICA & RECOMENDACIONES -->
+        <section class="soft-card rounded-3xl p-7 md:p-9 space-y-6">
+            <div class="border-b border-blush/40 dark:border-deeprose/30 pb-4 flex items-center justify-between">
+                <div>
+                    <h2 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Música & canciones favoritas</h2>
+                    <p class="text-xs text-textdark/60 dark:text-darktext/60 font-light mt-0.5">Playlist compartida + recomendaciones que perduran</p>
+                </div>
+                <span class="text-xl">🎵</span>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden border border-blush/40 dark:border-deeprose/30 bg-white dark:bg-darkbg p-2">
+                <iframe data-testid="embed-iframe" 
+                style="border-radius:12px" 
+                src="https://open.spotify.com/embed/playlist/43m6w7cn9IeKgXjakYAqWT?utm_source=generator&si=cc35aa15f0d14303" 
+                width="100%" 
+                height="352" 
+                frameBorder="0" 
+                allowfullscreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy">
+                </iframe>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <h3 class="font-serif text-base text-deeprose dark:text-accentpink italic">🎶 Canciones recomendadas & agregadas por Paz</h3>
+                <div id="songs-list" class="space-y-2"></div>
+
+                <div class="bg-rosebg/60 dark:bg-deeprose/20 p-4 rounded-2xl border border-blush/40 dark:border-deeprose/30 space-y-2">
+                    <p class="text-xs font-medium text-deeprose dark:text-accentpink">Agregar canción (Pega link de Spotify/YouTube):</p>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="song-input" placeholder="Ej. Link de Spotify o 'Artista - Canción'..." class="w-full bg-white dark:bg-darkbg/80 border border-blush/50 dark:border-deeprose/40 rounded-xl px-3.5 py-2 text-xs text-textdark dark:text-darktext focus:outline-none focus:border-accentpink">
+                        <button onclick="addCustomSong()" id="add-song-btn" class="py-2.5 px-5 bg-accentpink hover:bg-deeprose text-white text-xs font-medium rounded-xl transition shadow-sm whitespace-nowrap flex items-center justify-center gap-1">
+                            <span>+ Agregar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL DE SOBRES -->
+    <div id="letter-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity duration-300">
+        <div id="modal-content" class="bg-white dark:bg-darkbg border border-blush dark:border-deeprose rounded-3xl p-7 max-w-sm w-full text-center space-y-4 shadow-2xl relative transform transition-all duration-300 scale-95 opacity-0">
+            <span id="modal-emoji" class="text-3xl block">💌</span>
+            <h3 id="modal-title" class="font-serif text-xl text-deeprose dark:text-accentpink"></h3>
+            <p id="modal-body" class="text-xs md:text-sm text-textdark/80 dark:text-darktext/80 leading-relaxed italic font-light max-h-[50vh] overflow-y-auto"></p>
+            <button onclick="closeLetter()" class="mt-2 py-2 px-6 bg-accentpink hover:bg-deeprose text-white text-xs rounded-full transition">
+                Cerrar sobre 🌸
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL CUESTIONARIO -->
+    <div id="welcome-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-darkbg border border-blush dark:border-deeprose rounded-3xl p-7 max-w-md w-full text-center space-y-5 shadow-2xl relative">
+            <div id="step-1" class="space-y-4">
+                <span class="text-4xl block animate-bounce">👑🌸</span>
+                <h3 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Un detalle especial</h3>
+                <p class="text-xs text-textdark/70 dark:text-darktext/70 leading-relaxed">
+                    Antes de desbloquear tu espacio, dinos cómo te gusta que te llamemos por aquí.
+                </p>
+                <div class="space-y-2 text-left pt-2">
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-accentpink">1. ¿Cómo se llama la cumpleañera de hoy?</label>
+                    <input type="text" id="quiz-nickname" placeholder="" class="w-full bg-rosebg dark:bg-deeprose/20 border border-blush dark:border-deeprose/40 rounded-xl px-4 py-2.5 text-xs text-textdark dark:text-darktext focus:outline-none focus:border-accentpink">
+                </div>
+                <button onclick="nextStep(2)" class="w-full py-3 bg-accentpink hover:bg-deeprose text-white text-xs font-medium uppercase tracking-wider rounded-xl transition shadow-md mt-2">
+                    Siguiente ➔
+                </button>
+            </div>
+
+            <div id="step-2" class="space-y-4 hidden">
+                <span class="text-4xl block">✨💭</span>
+                <h3 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">Un deseo especial</h3>
+                <div class="space-y-2 text-left">
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-accentpink">2. ¿Cuál es un pequeño deseo o meta que tienes para este nuevo año de vida?</label>
+                    <input type="text" id="quiz-wish" placeholder="Escribe aquí un deseo especial..." class="w-full bg-rosebg dark:bg-deeprose/20 border border-blush dark:border-deeprose/40 rounded-xl px-4 py-2.5 text-xs text-textdark dark:text-darktext focus:outline-none focus:border-accentpink">
+                </div>
+                <button onclick="nextStep(3)" class="w-full py-3 bg-accentpink hover:bg-deeprose text-white text-xs font-medium uppercase tracking-wider rounded-xl transition shadow-md mt-2">
+                    Último paso ➔
+                </button>
+            </div>
+
+            <div id="step-3" class="space-y-4 hidden">
+                <span class="text-4xl block">🎂💖</span>
+                <h3 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">El momento de celebrar</h3>
+                <div class="space-y-2 text-left">
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-accentpink">3. De todos tus cumpleaños, ¿qué es lo que más te gusta de celebrar?</label>
+                    <div class="grid grid-cols-1 gap-2 pt-1">
+                        <button onclick="finishQuiz()" class="p-2.5 bg-softpink dark:bg-deeprose/30 hover:bg-blush rounded-xl text-xs text-deeprose dark:text-darktext border border-blush/40 text-left px-4">
+                            🍰 El pastel y los antojos
+                        </button>
+                        <button onclick="finishQuiz()" class="p-2.5 bg-softpink dark:bg-deeprose/30 hover:bg-blush rounded-xl text-xs text-deeprose dark:text-darktext border border-blush/40 text-left px-4">
+                            🫂 Estar con las personas que quiero
+                        </button>
+                        <button onclick="finishQuiz()" class="p-2.5 bg-softpink dark:bg-deeprose/30 hover:bg-blush rounded-xl text-xs text-deeprose dark:text-darktext border border-blush/40 text-left px-4">
+                            ✨ La vibra bonita y las muestras de cariño
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DATOS INDEXEDDB ---
+        let db;
+        const request = indexedDB.open("PazAudiosDB", 1);
+
+        request.onupgradeneeded = function(e) {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("audios")) {
+                db.createObjectStore("audios", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        request.onsuccess = function(e) {
+            db = e.target.result;
+            loadCustomAudiosFromDB();
+        };
+
+        // --- GLOBOS ---
+        function launchBalloons() {
+            const container = document.getElementById('balloon-container');
+            const colors = ['#F4C2C2', '#E87A90', '#9E3B55', '#FBE8EC', '#D8B4F8', '#FFC3A0'];
+
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const balloon = document.createElement('div');
+                    balloon.className = 'balloon';
+                    balloon.style.left = `${Math.random() * 90 + 5}%`;
+                    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    balloon.style.animationDuration = `${4 + Math.random() * 4}s`;
+
+                    container.appendChild(balloon);
+
+                    setTimeout(() => {
+                        balloon.remove();
+                    }, 8000);
+                }, i * 200);
+            }
+        }
+
+        // --- CUESTIONARIO ---
+        let quizData = { nickname: "Paz", wish: "" };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hasVisited = localStorage.getItem('paz_visited');
+            if (!hasVisited) {
+                document.getElementById('welcome-modal').classList.remove('hidden');
+            } else {
+                const savedName = localStorage.getItem('paz_nickname');
+                if (savedName) personalizeHero(savedName);
+            }
+        });
+
+        function nextStep(step) {
+            if (step === 2) {
+                const nameInput = document.getElementById('quiz-nickname').value.trim();
+                if (nameInput) quizData.nickname = nameInput;
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+            } else if (step === 3) {
+                const wishInput = document.getElementById('quiz-wish').value.trim();
+                if (wishInput) quizData.wish = wishInput;
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('step-3').classList.remove('hidden');
+            }
+        }
+        
+        function finishQuiz() {
+            localStorage.setItem('paz_visited', 'true');
+            localStorage.setItem('paz_nickname', quizData.nickname);
+            if (quizData.wish) localStorage.setItem('paz_wish', quizData.wish);
+            
+            document.getElementById('welcome-modal').classList.add('hidden');
+            personalizeHero(quizData.nickname);
+            celebrate();
+        }
+
+        function personalizeHero(name) {
+            document.getElementById('hero-title').innerText = `¡Feliz cumpleaños, ${name}! 🎂`;
+        }
+
+        // --- MODO NOCHE ---
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon').innerText = isDark ? '☀️' : '🌙';
+            document.getElementById('theme-text').innerText = isDark ? 'Día' : 'Noche';
+            localStorage.setItem('paz_theme', isDark ? 'dark' : 'light');
+        }
+
+        if (localStorage.getItem('paz_theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.getElementById('theme-icon').innerText = '☀️';
+            document.getElementById('theme-text').innerText = 'Día';
+        }
+
+        // --- SOBRES INTERACTIVOS ---
+        const letters = {
+            1: {
+                emoji: "🌸",
+                title: "Abre cuando estés cansada",
+                body: "Respira profundo. Recuerda que no tienes que resolver todo hoy. Haz una pausa, y date el crédito por todo el esfuerzo que haces siempre. Lo estás haciendo súper bien."
+            },
+            2: {
+                emoji: "✨",
+                title: "Abre cuando quieras recordar lo increíble que eres",
+                body: "Recuerda que eres alguien súper especial que alegra a quien te rodea. Nunca dudes de lo valiosa, capaz y maravillosa que eres. ¡Que nadie apague nunca eso que te hace ser tú misma!"
+            },
+            3: {
+                emoji: "🎂",
+                title: "¡Feliz Cumpleaños!",
+                body: "¡Feliz nuevo año de vida, Paz! 🎉 Deseo que este nuevo año esté lleno de risas, momentos inolvidables, salud y sueños cumplidos. ¡A celebrar mucho hoy!"
+            },
+            4: {
+                emoji: "😁",
+                title: "Abre cuando necesites sacarte una sonrisa",
+                body: "Dato real: sonreír al pensar en alguien es de las cosas más bonitas que hay y ayuda a la salud. Y para que lo sepas, por aquí siempre hay alguien que sonríe al pensar de ti"
+            },
+            5: {
+                emoji: "😉",
+                title: "Abre cuando recibas una buena noticia",
+                body: "¡Sabía que lo lograrías! 🎉✨ No sabes la alegría gigantesca que me da por ti. Te mereces todo lo bonito que te pasa por lo duro que trabajas y el gran corazón que tienes. ¡Celebra a lo grande!"
+            },
+            6: {
+                emoji: "❤️‍🩹",
+                title: "Abre cuando sientas que todo te sale mal",
+                body: "Respira profundo... 🤍 Un mal día no te define. Es normal sentir frustración, pero esto es solo un tropiezo momentaneo. Descansa un poco y recuerda que mañana el sol vuelve a salir. No estás sola."
+            },
+            7: {
+                emoji: "🫂",
+                title: "Abre cuando necesites un abrazo",
+                body: "Cierra los ojos un segundo... ✨ Imagina a tu mamá o papá o algún ser querido te da un abrazo fuerte de esos en los que te puedes soltar por completo. Aunque no esté al lado tuyo ahora mismo, ten por seguro que esa persona te quiere muchísimo"
+            },
+            8: {
+                emoji: "🐧",
+                title: "Abre cuando quieras recordar cuanto te quiere este pingüinito",
+                body: "Pingüinita, al leer esto, solo queria recordarte que te quiero, y que ocupas un lugarcito en mi corazón, haberte conocido no es concidencia y es muy bonito. Gracias por ser como eres, por cada momento que me haces reir. Nunca te olvides que siempre tienes a este pingüinito apoyándote siempre."
+            }
+        };
+
+        function openLetter(key) {
+            const letter = letters[key];
+            if (!letter) return;
+
+            const modal = document.getElementById('letter-modal');
+            const content = document.getElementById('modal-content');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+            const emoji = document.getElementById('modal-emoji');
+
+            if (emoji) emoji.innerText = letter.emoji;
+            title.innerText = letter.title;
+            body.innerText = letter.body;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeLetter() {
+            const modal = document.getElementById('letter-modal');
+            const content = document.getElementById('modal-content');
+
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        // --- FLOR INTERACTIVA ---
+        const petalMessages = [
+            "Eres una persona increíble ✨",
+            "Tu sonrisa alegra el día 🌸",
+            "Gracias por estar siempre ahí 💖",
+            "Tu luz es contagiosa 🌟",
+            "Eres muy valiosa 🌷",
+            "Haces el mundo más bonito 🎨",
+            "Eres capaz de todo 💪",
+            "Sonrié, te ves super bien 😊"
+        ];
+
+        function initFlower() {
+            const container = document.getElementById('petals-container');
+            if (!container) return;
+    
+            container.innerHTML = '';
+            const totalPetals = petalMessages.length;
+
+            petalMessages.forEach((msg, idx) => {
+                const angle = (360 / totalPetals) * idx;
+                const petal = document.createElement('div');
+                petal.className = `absolute top-1/2 left-1/2 w-8 h-20 bg-gradient-to-t from-rose-100 via-white to-pink-100 rounded-full border border-pink-200/60 shadow-sm cursor-pointer hover:brightness-95 transition-all duration-300`;
+                petal.style.transformOrigin = '50% 100%';
+                petal.style.transform = `translate(-50%, -100%) rotate(${angle}deg) translateY(-8px)`;
+
+                petal.onclick = () => pluckPetal(petal, msg);
+                container.appendChild(petal);
+            });
+        }
+
+        function pluckPetal(petalElement, message) {
+            if (petalElement.classList.contains('petal-falling')) return;
+
+            petalElement.classList.add('petal-falling');
+            petalElement.style.transition = 'transform 0.8s ease-in, opacity 0.8s ease-in';
+            petalElement.style.transform += ' translate(30px, 100px) rotate(45deg)';
+            petalElement.style.opacity = '0';
+            petalElement.style.pointerEvents = 'none';
+
+            const text = document.getElementById('flower-message-text');
+            if (text) {
+                text.innerText = `"${message}"`;
+            }
+        }
+
+        function resetFlower() {
+            const text = document.getElementById('flower-message-text');
+            if (text) text.innerText = "Toca un pétalo para descubrir un mensaje ✨";
+            initFlower();
+        }
+
+        window.addEventListener('DOMContentLoaded', initFlower);
+
+        // --- GENERADOR INFINITO ---
+        const intros = [
+            "Hoy recuerda que:",
+            "Un pequeño recordatorio para ti:",
+            "Tu mensaje de hoy dice:",
+            "Para este momento:",
+            "Un bonito pensamiento:",
+            "Dato importante de hoy:",
+            "Si necesitabas escuchar esto hoy:",
+            "Para no olvidar jamás:",
+            "Una verdad para este día:",
+            "Un pensamiento con calma:",
+            "Para cuando leas esto:",
+            "Desde la tranquilidad de hoy:"
+        ];
+
+        const cores = [
+            "tu alegría contagia a quienes te rodean",
+            "vienen proyectos y momentos increíbles para tu vida",
+            "mereces darte un descanso y disfrutar de las cosas pequeñas",
+            "cada paso que das te acerca más a lo que sueñas",
+            "tu sonrisa tiene el poder de cambiarle el día a cualquiera",
+            "eres mucho más fuerte y capaz de lo que a veces recuerdas",
+            "Dios siempre encamina todo para las personas de buen corazón",
+            "tu presencia y tus palabras traen una calma muy especial",
+            "no hay prisa, las cosas buenas toman su tiempo para construirse",
+            "lo que es para ti encontrará la forma de quedarse en tu vida",
+            "tu autenticidad y tu forma de ser valen muchísimo",
+            "haces de cualquier día común un momento de mucha felicidad",
+            "incluso en los días difíciles, lo estás haciendo excelente",
+            "es una bendición enorme haber coincidido en este camino contigo",
+            "la paz que transmites es de los regalos más bonitos que tienes"
+        ];
+
+        const endings = [
+            "🌸 Disfruta mucho tu día.",
+            "✨ Sigue brillando a tu manera.",
+            "🎀 Un saludo con mucho cariño.",
+            "💖 Que hoy sea un día genial.",
+            "☕ Haz una pausa y tómate tu café/té favorito.",
+            "🌟 Lo mejor es tu presente.",
+            "🍃 Camina a tu ritmo y con tranquilidad.",
+            "🎧 Escucha una buena canción hoy.",
+            "🌷 Que nada te quite esa tranquilidad.",
+            "✨ Que tengas un excelente día por delante.",
+            "🧘‍♂️ Sonríe y sigue enfocada en lo tuyo.",
+            "🙏 Acuérdate de Dios a donde quiera que vayas"
+        ];
+
+        let lastFortune = "";
+
+        function getFortune() {
+            let fortune = "";
+            do {
+                const i = intros[Math.floor(Math.random() * intros.length)];
+                const c = cores[Math.floor(Math.random() * cores.length)];
+                const e = endings[Math.floor(Math.random() * endings.length)];
+                fortune = `${i} ${c}. ${e}`;
+            } while (fortune === lastFortune);
+
+            lastFortune = fortune;
+            document.getElementById('fortune-text').innerText = `"${fortune}"`;
+            
+            confetti({
+                particleCount: 20,
+                spread: 40,
+                origin: { y: 0.5 },
+                colors: ['#F4C2C2', '#E87A90']
+            });
+        }
+
+        // --- AUDIOS & RECUERDOS ---
+        const defaultTracks = [
+            { tag: "Audio 01", title: "Mensaje Especial de Cumpleaños ✨", src: "", isDefault: true },
+            { tag: "Audio 02", title: "Mensaje Especial de Cariño", src: "", isDefault: true },
+        ];
+
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds === Infinity) return "--:--";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        let audioTracks = [...defaultTracks];
+        let currentIndex = 0;
+        let playing = false;
+        let currentAudioElement = new Audio();
+
+        function loadTrackDurations() {
+            audioTracks.forEach((track, index) => {
+                if (track.src && !track.duration) {
+                    const tempAudio = new Audio(track.src);
+                    tempAudio.onloadedmetadata = () => {
+                        track.duration = formatTime(tempAudio.duration);
+                        renderList();
+                        if (index === currentIndex) {
+                            document.getElementById('ep-duration').innerText = track.duration;
+                            document.getElementById('ep-time-end').innerText = track.duration;
+                        }
+                    };
+                }
+            });
+        }
+
+        function loadCustomAudiosFromDB() {
+            if (!db) return;
+            const transaction = db.transaction(["audios"], "readonly");
+            const store = transaction.objectStore("audios");
+            const getAll = store.getAll();
+
+            getAll.onsuccess = function() {
+                const stored = getAll.result || [];
+                audioTracks = [...defaultTracks, ...stored];
+                loadTrackDurations();
+                renderList();
+            };
+        }
+
+        function renderList() {
+            const box = document.getElementById('playlist-box');
+            if (!box) return;
+
+            box.innerHTML = audioTracks.map((t, i) => `
+                <div class="flex items-center justify-between p-3.5 rounded-xl transition ${i === currentIndex ? 'bg-softpink/80 dark:bg-deeprose/40 border border-blush dark:border-deeprose' : 'hover:bg-softpink/30 dark:hover:bg-deeprose/20 border border-transparent'}">
+                    <div onclick="pickAudio(${i})" class="flex items-center gap-3 cursor-pointer flex-grow">
+                        <span class="text-xs ${i === currentIndex ? 'text-deeprose dark:text-accentpink font-bold' : 'text-textdark/40 dark:text-darktext/40'}">${i === currentIndex && playing ? '🔊' : '▶'}</span>
+                        <div>
+                            <p class="text-xs font-medium text-textdark dark:text-darktext">${t.title}</p>
+                            <span class="text-[10px] text-accentpink">${t.tag}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[11px] font-mono text-textdark/40 dark:text-darktext/40">${t.duration || '--:--'}</span>
+                        ${!t.isDefault ? `<button onclick="deleteAudio(${i})" title="Eliminar audio" class="text-xs text-textdark/40 dark:text-darktext/40 hover:text-red-500 transition px-1">✕</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function pickAudio(index) {
+            currentIndex = index;
+            const track = audioTracks[currentIndex];
+            
+            document.getElementById('ep-tag').innerText = track.tag;
+            document.getElementById('ep-title').innerText = track.title;
+            document.getElementById('ep-duration').innerText = track.duration || '--:--';
+            document.getElementById('ep-time-end').innerText = track.duration || '--:--';
+
+            if (track.src) {
+                currentAudioElement.src = track.src;
+                currentAudioElement.load();
+
+                currentAudioElement.onloadedmetadata = () => {
+                    const dynamicDuration = formatTime(currentAudioElement.duration);
+                    track.duration = dynamicDuration;
+                    document.getElementById('ep-duration').innerText = dynamicDuration;
+                    document.getElementById('ep-time-end').innerText = dynamicDuration;
+                    renderList();
+                };
+
+                if (playing) {
+                    currentAudioElement.play();
+                }
+            } else {
+                currentAudioElement.pause();
+                playing = false;
+                document.getElementById('play-icon').innerText = '▶';
+            }
+            renderList();
+        }
+
+        function toggleAudio() {
+            const track = audioTracks[currentIndex];
+            if (!track.src) {
+                alert("Este audio aún no tiene un archivo asignado.");
+                return;
+            }
+
+            playing = !playing;
+            if (playing) {
+                currentAudioElement.play();
+                document.getElementById('play-icon').innerText = '❚❚';
+            } else {
+                currentAudioElement.pause();
+                document.getElementById('play-icon').innerText = '▶';
+            }
+            renderList();
+        }
+
+        function deleteAudio(index) {
+            const track = audioTracks[index];
+            if (confirm('¿Quieres eliminar este audio de la caja?')) {
+                if (index === currentIndex) {
+                    currentAudioElement.pause();
+                    playing = false;
+                    document.getElementById('play-icon').innerText = '▶';
+                }
+
+                if (track.id && db) {
+                    const tx = db.transaction(["audios"], "readwrite");
+                    tx.objectStore("audios").delete(track.id);
+                }
+
+                audioTracks.splice(index, 1);
+                if (currentIndex >= audioTracks.length) {
+                    currentIndex = 0;
+                }
+                pickAudio(currentIndex);
+            }
+        }
+
+        function nextAudio() {
+            currentIndex = (currentIndex + 1) % audioTracks.length;
+            pickAudio(currentIndex);
+        }
+
+        function prevAudio() {
+            currentIndex = (currentIndex - 1 + audioTracks.length) % audioTracks.length;
+            pickAudio(currentIndex);
+        }
+
+        currentAudioElement.ontimeupdate = () => {
+            if (currentAudioElement.duration) {
+                const slider = document.getElementById('audio-slider');
+                const progress = (currentAudioElement.currentTime / currentAudioElement.duration) * 100;
+                slider.value = progress;
+
+                document.getElementById('ep-time-current').innerText = formatTime(currentAudioElement.currentTime);
+            }
+        };
+
+        document.getElementById('audio-slider').addEventListener('input', (e) => {
+            if (currentAudioElement.duration) {
+                const seekTime = (e.target.value / 100) * currentAudioElement.duration;
+                currentAudioElement.currentTime = seekTime;
+            }
+        });
+
+        currentAudioElement.onended = () => {
+            playing = false;
+            document.getElementById('play-icon').innerText = '▶';
+            renderList();
+        };
+
+        function addCustomAudio() {
+            const titleInput = document.getElementById('user-audio-title');
+            const fileInput = document.getElementById('user-audio-file');
+            const file = fileInput.files[0];
+
+            if (!titleInput.value.trim()) {
+                alert('Por favor escribe un título para tu audio.');
+                return;
+            }
+
+            if (!file) {
+                alert('Por favor selecciona un archivo de audio.');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const audioSrc = e.target.result;
+                const tempAudio = new Audio(audioSrc);
+
+                tempAudio.onloadedmetadata = function() {
+                    const formattedDuration = formatTime(tempAudio.duration);
+
+                    const newAudio = {
+                        tag: "Guardado por Paz 💖",
+                        title: titleInput.value.trim(),
+                        duration: formattedDuration,
+                        src: audioSrc,
+                        isDefault: false
+                    };
+
+                    if (db) {
+                        const tx = db.transaction(["audios"], "readwrite");
+                        const store = tx.objectStore("audios");
+                        const addReq = store.add(newAudio);
+
+                        addReq.onsuccess = function(ev) {
+                            newAudio.id = ev.target.result;
+                            audioTracks.push(newAudio);
+                            titleInput.value = '';
+                            fileInput.value = '';
+                            renderList();
+                            alert('¡Audio guardado exitosamente en tu caja de recuerdos! ✨');
+                        };
+                    }
+                };
+            };
+
+            reader.readAsDataURL(file);
+        }
+        
+        // --- CANCIONES ---
+        let userSongs = [];
+
+        function loadCustomSongs() {
+            const stored = localStorage.getItem('paz_custom_songs');
+            if (stored) {
+                try {
+                    userSongs = JSON.parse(stored);
+                } catch(e) {}
+            }
+        }
+
+        function renderSongs() {
+            const container = document.getElementById('songs-list');
+            if (userSongs.length === 0) {
+                container.innerHTML = `<p class="text-xs text-textdark/50 dark:text-darktext/50 italic">Aún no hay canciones agregadas.</p>`;
+                return;
+            }
+            container.innerHTML = userSongs.map((s, idx) => `
+                <div class="flex items-center justify-between bg-white/90 dark:bg-darkbg/90 p-3 rounded-xl border border-blush/30 dark:border-deeprose/30 text-xs">
+                    <div class="flex items-center gap-2 overflow-hidden pr-2">
+                        <span class="text-accentpink flex-shrink-0">🎵</span>
+                        <span class="font-medium text-textdark dark:text-darktext truncate">${s.name}</span>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        ${s.link && s.link !== '#' ? `<a href="${s.link}" target="_blank" class="text-[10px] text-deeprose dark:text-accentpink font-medium underline">Escuchar ↗</a>` : ''}
+                        <button onclick="deleteSong(${idx})" title="Eliminar canción" class="text-xs text-textdark/40 dark:text-darktext/40 hover:text-red-500 transition px-1">✕</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function addCustomSong() {
+            const input = document.getElementById('song-input');
+            const btn = document.getElementById('add-song-btn');
+            const value = input.value.trim();
+
+            if (!value) {
+                alert('Por favor ingresa un nombre o pega un enlace.');
+                return;
+            }
+
+            let songName = value;
+            let songLink = '#';
+
+            if (value.startsWith('http://') || value.startsWith('https://')) {
+                songLink = value;
+                btn.disabled = true;
+                btn.innerText = 'Buscando...';
+
+                try {
+                    let fetchUrl = '';
+
+                    if (value.includes('spotify.com')) {
+                        fetchUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(value)}`;
+                    } else {
+                        fetchUrl = `https://noembed.com/embed?url=${encodeURIComponent(value)}`;
+                    }
+
+                    const res = await fetch(fetchUrl);
+                    const data = await res.json();
+
+                    if (data && data.title) {
+                        if (data.author_name && !data.title.includes(data.author_name)) {
+                            songName = `${data.title} — ${data.author_name}`;
+                        } else {
+                            songName = data.title;
+                        }
+                    } else {
+                        alert('No se pudo extraer el título automáticamente. Verifica el enlace.');
+                        btn.disabled = false;
+                        btn.innerText = '+ Agregar';
+                        return;
+                    }
+                } catch (e) {
+                    alert('Error al consultar el enlace. Verifica tu conexión o el enlace.');
+                    btn.disabled = false;
+                    btn.innerText = '+ Agregar';
+                    return;
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = '+ Agregar';
+                }
+            }
+
+            userSongs.push({ name: songName, link: songLink });
+            localStorage.setItem('paz_custom_songs', JSON.stringify(userSongs));
+
+            input.value = '';
+            renderSongs();
+        }
+
+        function deleteSong(idx) {
+            if (confirm('¿Deseas quitar esta canción de la lista?')) {
+                userSongs.splice(idx, 1);
+                localStorage.setItem('paz_custom_songs', JSON.stringify(userSongs));
+                renderSongs();
+            }
+        }
+
+        loadCustomSongs();
+        renderList();
+        renderSongs();
+
+        function celebrate() {
+            confetti({
+                particleCount: 100,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#F4C2C2', '#E87A90', '#9E3B55', '#FBE8EC']
+            });
+            launchBalloons();
+        }
+    </script>
+</body>
+</html>

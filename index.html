@@ -442,19 +442,27 @@
                 <span class="text-4xl block">🎂💖</span>
                 <h3 class="font-serif text-2xl text-deeprose dark:text-accentpink italic">El momento de celebrar</h3>
                 <div class="space-y-2 text-left">
-                    <label class="text-[11px] font-bold uppercase tracking-wider text-accentpink">3. De todos tus cumpleaños, ¿qué es lo que más te gusta de celebrar?</label>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-accentpink">
+                        3. De todos tus cumpleaños, ¿qué es lo que más te gusta de celebrar? (Puedes elegir varios):
+                    </label>
                     <div class="grid grid-cols-1 gap-2 pt-1">
-                        <button onclick="finishQuiz()" class="p-2.5 bg-softpink dark:bg-deeprose/30 hover:bg-blush rounded-xl text-xs text-deeprose dark:text-darktext border border-blush/40 text-left px-4">
-                            🍰 El pastel y los antojos
-                        </button>
-                        <button onclick="finishQuiz()" class="p-2.5 bg-softpink dark:bg-deeprose/30 hover:bg-blush rounded-xl text-xs text-deeprose dark:text-darktext border border-blush/40 text-left px-4">
-                            🫂 Estar con las personas que quiero
-                        </button>
-                        <button onclick="finishQuiz()" class="p-2.5 bg-softpink dark:bg-deeprose/30 hover:bg-blush rounded-xl text-xs text-deeprose dark:text-darktext border border-blush/40 text-left px-4">
-                            ✨ La vibra bonita y las muestras de cariño
-                        </button>
+                        <label class="flex items-center gap-3 p-2.5 bg-softpink/50 dark:bg-deeprose/20 hover:bg-softpink rounded-xl text-xs text-textdark dark:text-darktext border border-blush/40 cursor-pointer transition">
+                            <input type="checkbox" name="quiz-celebrate" value="personas" class="accent-accentpink w-4 h-4 rounded">
+                            <span>🫂 Estar con las personas que quieres</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-2.5 bg-softpink/50 dark:bg-deeprose/20 hover:bg-softpink rounded-xl text-xs text-textdark dark:text-darktext border border-blush/40 cursor-pointer transition">
+                            <input type="checkbox" name="quiz-celebrate" value="sorpresa" class="accent-accentpink w-4 h-4 rounded">
+                            <span>🎉 Una sorpresa inesperada</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-2.5 bg-softpink/50 dark:bg-deeprose/20 hover:bg-softpink rounded-xl text-xs text-textdark dark:text-darktext border border-blush/40 cursor-pointer transition">
+                            <input type="checkbox" name="quiz-celebrate" value="pastel" class="accent-accentpink w-4 h-4 rounded">
+                            <span>✨ El pastel y los regalitos</span>
+                        </label>
                     </div>
                 </div>
+                <button onclick="finishQuizMulti()" class="w-full py-3 bg-accentpink hover:bg-deeprose text-white text-xs font-medium uppercase tracking-wider rounded-xl transition shadow-md mt-2">
+                    ¡Comenzar la celebración! ✨
+                </button>
             </div>
         </div>
     </div>
@@ -525,15 +533,18 @@
             }
         }
         
-        function finishQuiz() {
-            localStorage.setItem('paz_visited', 'true');
-            localStorage.setItem('paz_nickname', quizData.nickname);
-            if (quizData.wish) localStorage.setItem('paz_wish', quizData.wish);
-            
-            document.getElementById('welcome-modal').classList.add('hidden');
-            personalizeHero(quizData.nickname);
-            celebrate();
-        }
+            function finishQuizMulti() {
+                const selectedOptions = Array.from(document.querySelectorAll('input[name="quiz-celebrate"]:checked')).map(cb => cb.value);
+    
+                localStorage.setItem('paz_visited', 'true');
+                localStorage.setItem('paz_nickname', quizData.nickname);
+                if (quizData.wish) localStorage.setItem('paz_wish', quizData.wish);
+                localStorage.setItem('paz_celebrate_choices', JSON.stringify(selectedOptions));
+
+                document.getElementById('welcome-modal').classList.add('hidden');
+                personalizeHero(quizData.nickname);
+                celebrate();
+            }
 
         function personalizeHero(name) {
             document.getElementById('hero-title').innerText = `¡Feliz cumpleaños, ${name}! 🎂`;
@@ -759,7 +770,7 @@
         // --- AUDIOS & RECUERDOS ---
         const defaultTracks = [
             { tag: "Audio 01", title: "Mensaje Especial de Cumpleaños ✨", src: "", isDefault: true },
-            { tag: "Audio 02", title: "Mensaje Especial de Cariño", src: "", isDefault: true },
+            { tag: "Audio 02", title: "Mensaje Especial de Cariño 🤗", src: "", isDefault: true },
         ];
 
         function formatTime(seconds) {
